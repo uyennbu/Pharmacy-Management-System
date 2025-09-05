@@ -6,7 +6,9 @@ CREATE TABLE product (
     import_price DECIMAL(10, 2) NOT NULL,
     unit ENUM('chai', 'vi', 'hop', 'vien', 'goi') NOT NULL,
     product_group ENUM('vat_tu', 'ha_sot_giam_dau', 'khac') NOT NULL,
-    sold_out_constraint INT DEFAULT 0 NOT NULL
+    sold_out_constraint INT DEFAULT 0 NOT NULL,
+    company_id INT NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES company(company_id)
     -- expiration_constraint DATE NOT NULL -- 
 );
 CREATE TABLE respository (
@@ -19,8 +21,8 @@ CREATE TABLE respository (
 CREATE TABLE customer (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_name VARCHAR(255) NOT NULL,
-    customer_email VARCHAR(255) NOT NULL,
-    customer_phone VARCHAR(20) NOT NULL
+    customer_email VARCHAR(255),
+    customer_phone VARCHAR(20)
     -- loans DECIMAL(10, 2) NOT NULL
 );
 CREATE TABLE company (
@@ -37,8 +39,7 @@ CREATE TABLE import_receipt (
     company_id INT NOT NULL,
     cost DECIMAL(10, 2) NOT NULL,
     payment DECIMAL(10, 2) NOT NULL, -- how many money I have paid
-    pay_date DATE DEFAULT (CURDATE()),
-    paid BOOLEAN DEFAULT TRUE,
+    pay_date DATE DEFAULT (CURDATE()), -- deleted paid
     FOREIGN KEY (company_id) REFERENCES company(company_id)
 );
 CREATE TABLE importing_transactions (
@@ -58,8 +59,7 @@ CREATE TABLE selling_receipt (
     selling_date DATE NOT NULL DEFAULT (CURDATE()),
     cost DECIMAL(10, 2) NOT NULL,
     payment DECIMAL(10, 2) NOT NULL,
-    pay_date DATE DEFAULT (SELECT CURDATE()),
-    paid BOOLEAN DEFAULT TRUE,
+    pay_date DATE DEFAULT (CURDATE()),
     customer_id INT NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 );
@@ -106,6 +106,9 @@ CREATE VIEW out_of_stock AS
 
 
 -- trigger --
+
+-- -----------------------------------------MODIFY TRIGGER
+
 CREATE TRIGGER update_respository_counts
 AFTER INSERT ON importing_transactions
 FOR EACH ROW
@@ -121,11 +124,11 @@ BEGIN
         -- If it exists, update the counts
         UPDATE respository
         SET counts = counts + NEW.counts,
-            due_date = NEW.expiration
+            expiration_date = NEW.expiration
         WHERE product_code = NEW.product_code AND batch_code = NEW.batch_code;
     ELSE
         -- If it doesn't exist, insert a new record
-        INSERT INTO respository (product_code, counts, due_date, batch_code)
+        INSERT INTO respository (product_code, counts, expiration_date, batch_code)
         VALUES (NEW.product_code, NEW.counts, NEW.expiration, NEW.batch_code);
     END IF;
 END;
@@ -138,3 +141,8 @@ BEGIN
     SET counts = counts - NEW.counts
     WHERE product_code = NEW.product_code AND batch_code = NEW.batch_code;
 END;
+
+
+-- index
+CREATE INDEX idx_product_code ON product (product_code);
+CREATE INDEX idx_product_name ON product (product_name);
