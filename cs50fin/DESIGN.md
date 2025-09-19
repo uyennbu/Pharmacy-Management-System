@@ -17,8 +17,6 @@ The database for Pharmacy management includes all entities necessary to facilita
 * selling_receipt, including basic information about the pharmacy selling receipts
 * selling_transactions, including more detailed about the products in selling receipts
 
-Out of scope are elements like ...
-
 ## Functional Requirements
 
 This database will support:
@@ -143,19 +141,23 @@ The below entity relationship diagram describes the relationships among the enti
 
 As detailed by the diagram:
 
-https://mermaid.live/edit#pako:eNp9UsGOgjAQ_ZVmzmBEQKQ3g2RDokIAD25ITANVSaQ1tSTrov--FQWzrtnppTPzZt5rZxrIeUEBg67rGZOlPFCMoj0RFcnPqCKM7GhFmcxYC6BiVpKdIFXGkLIoDmcrL0WXC9J1dGlQ7CdRmARpGK8xKtkd5YWLaLpcP1FdGUZHwYs6p3dcsIjCON3EvucHUYquvIVf-nqM-PYtsm98jwfLj00aT5fJ1EuDcJmgm5T8UBe_eP6ger6HvCedt0rScOHHDyLeoMSfz28NOgXqJbXI9-T0oHjN9wq7xH_63mJe1XW_kbHnQQg02ImyACxFTTWoqJrjzYXmls1A7tU0M8DqWtAtqQ8yg4xdVdmRsE_Oq65S8Hq3B7wlh5Py6mNBJH2Mvo8KygoqPF4zCXhkWk7bBXADX8q3xwPHGjnOxHBGE8uybA3OgMcDy3YNa-Ia9sixh_bkqsF3yzscuKZpGGPTGZuuMtPVgBal5GJx39B2Ua8_csfN-Q
-
 * One company produce zero to many products sold by the pharmacy. One product can have one to many batch stored in respository. Each record of respository is related to only one product with one unique batch code.
 * One company can have zero to many importing receipt, and one importing receipt can belong to only one company. One importing receipt include one to many importing transactions, each importing transaction is related to one product. One product can appeared in many transactions.
 * One customer can purchase zero to many selling receipts. One selling receipt includes one to many selling transactions, each of which related to one product. One product can be bought many times or have not been purchased any time as it is new, thus can be related to zero to many transactions.
 
 ## Optimizations
 
-Per the typical queries in `queries.sql`, it is common for users of the database to access all submissions submitted by any particular student. For that reason, indexes are created on the `first_name`, `last_name`, and `github_username` columns to speed the identification of students by those columns.
-
-Similarly, it is also common practice for a user of the database to concerned with viewing all students who submitted work to a particular problem. As such, an index is created on the `name` column in the `problems` table to speed the identification of problems by name.
+* Most queries are related to product based on product code, and product name so indicies on product code and product name are needed to boot the queris' speed.
 
 ## Limitations
-
+* The database does not apply constraints on email and phone number formats.
+* The database does not apply constraints on the counts of products in respository, payment in selling and importing transactions and receipts so they are possible to have negative counts.
+* The database does not have constraints on the expiration date of products in respository and importing transactions, so it is possible to have products that are already expired or have invalid expiration date like 2024-02-30.
+* The database does not have constraints on the pay date of selling and importing receipts, so it is possible to have pay date that is earlier than the import or selling date.
+* The database does not have constraints on the price of products in product table, so it is possible to have negative price.
+* The database does not have constraints on the counts of products in selling transactions, so it is possible to sell more products than available in respository.
+* The database does not have constraints on the cost and payment of selling and importing receipts, so it is possible to have payment that is more than cost.
+* The database does not have constraints on the counts of products in importing transactions, so it is possible to import negative counts of products.
+* The database does not have constraints on the batch code of products in respository and importing and selling transactions, so it is possible to have different products with the same batch code.
 
 

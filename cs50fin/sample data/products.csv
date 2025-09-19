@@ -1,0 +1,11 @@
+product_code,product_name,selling_price,import_price,unit,product_group,sold_out_constraint,company_id
+HS101,Paracetamol 500mg,2.50,1.50,vien,ha_sot_giam_dau,100,1
+BS212,Vitamin C Sachet,15.00,10.00,goi,khac,50,1
+VT121,Bandage Rolls,50.00,30.00,hop,vat_tu,20,2
+VT213,Surgical Mask Box,120.00,80.00,hop,vat_tu,30,2
+OT211,Throat Spray,75.00,50.00,chai,khac,15,3
+VT456,Antiseptic Solution,90.00,60.00,chai,vat_tu,10,3
+GD142,Pain Relief Gel,65.00,40.00,goi,ha_sot_giam_dau,25,4
+OT241,Functional Food,150.00,100.00,hop,khac,50,4
+VT247,Medical Device,250.00,180.00,hop,vat_tu,10,1
+VT406,Antiseptic Solution II,95.00,70.00,chai,vat_tu,10,3

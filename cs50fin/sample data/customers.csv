@@ -1,0 +1,5 @@
+customer_id,customer_name,customer_email,customer_phone
+1,Nguyen Van An,an.nv@example.com,84-911-111-222
+2,Tran Thi Binh,binh.tt@example.com,84-912-222-333
+3,Le Hoang Nam,nam.lh@example.com,84-913-333-444
+4,Pham Minh Thu,thu.pm@example.com,84-914-444-555

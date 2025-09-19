@@ -131,7 +131,7 @@ BEGIN
         INSERT INTO respository (product_code, counts, expiration_date, batch_code)
         VALUES (NEW.product_code, NEW.counts, NEW.expiration, NEW.batch_code);
     END IF;
-END;
+END//
 
 CREATE TRIGGER reduce_respository_counts
 AFTER INSERT ON selling_transactions
